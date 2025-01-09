@@ -55,6 +55,47 @@
   font-weight: 600;
 }
 
+/* 드롭다운 메뉴 스타일 */
+.dropdown-menu {
+  min-width: 150px;
+  padding: 0.5rem 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #000080;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(0, 0, 128, 0.08);
+  color: #000080;
+  transform: translateX(5px);
+}
+
+.nav-btn .dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #000080;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-btn .dropdown-item:hover {
+  background-color: rgba(0, 0, 128, 0.08);
+  color: #000080;
+}
+
 /* 사이드 탭 스타일 */
 .side-tab {
   display: flex;

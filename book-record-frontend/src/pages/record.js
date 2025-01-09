@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Button, Card, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart,
@@ -17,6 +17,8 @@ import "./record.css";
 const RecordPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("statistics");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [hoveredDropdownItem, setHoveredDropdownItem] = useState(null);
 
   // 샘플 데이터 - 실제 데이터로 교체 필요
   const monthlyData = [
@@ -66,7 +68,57 @@ const RecordPage = () => {
         </div>
 
         <div className="nav-right">
-          <button className="nav-btn">등록하기</button>
+          <div
+            onMouseEnter={() => setShowDropdown(true)}
+            onMouseLeave={() => setShowDropdown(false)}
+            style={{ position: "relative" }}
+          >
+            <button className="nav-btn">등록하기</button>
+            {showDropdown && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  right: 0,
+                  backgroundColor: "white",
+                  boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                  borderRadius: "4px",
+                  padding: "8px 0",
+                  zIndex: 1000,
+                  minWidth: "150px",
+                }}
+              >
+                <div
+                  style={{
+                    padding: "8px 16px",
+                    cursor: "pointer",
+                    backgroundColor:
+                      hoveredDropdownItem === "status"
+                        ? "rgba(0,0,128,0.08)"
+                        : "transparent",
+                  }}
+                  onMouseEnter={() => setHoveredDropdownItem("status")}
+                  onMouseLeave={() => setHoveredDropdownItem(null)}
+                >
+                  독서현황
+                </div>
+                <div
+                  style={{
+                    padding: "8px 16px",
+                    cursor: "pointer",
+                    backgroundColor:
+                      hoveredDropdownItem === "review"
+                        ? "rgba(0,0,128,0.08)"
+                        : "transparent",
+                  }}
+                  onMouseEnter={() => setHoveredDropdownItem("review")}
+                  onMouseLeave={() => setHoveredDropdownItem(null)}
+                >
+                  독후감작성
+                </div>
+              </div>
+            )}
+          </div>
           <button className="nav-btn">내 서재</button>
           <button className="nav-btn">로그인</button>
         </div>
@@ -96,7 +148,6 @@ const RecordPage = () => {
           <Col md={10}>
             {activeTab === "statistics" ? (
               <div className="d-flex flex-column align-items-center">
-                <h2>독서 통계</h2>
                 <div
                   className="d-flex justify-content-center flex-wrap"
                   style={{ maxWidth: "1200px" }}
@@ -163,10 +214,6 @@ const RecordPage = () => {
               </div>
             ) : (
               <div>
-                <h2>독후감 목록</h2>
-                <Button variant="primary" className="mb-3">
-                  새 독후감 작성
-                </Button>
                 <Card>
                   <Card.Body>
                     {/* 독후감 목록을 map으로 렌더링 */}
