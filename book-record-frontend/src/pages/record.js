@@ -64,7 +64,12 @@ const RecordPage = () => {
             독서현황
           </button>
           <button className="nav-btn active">기록</button>
-          <button className="nav-btn">추천</button>
+          <button
+            className="nav-btn"
+            onClick={() => navigate("/recommendation")}
+          >
+            추천
+          </button>
         </div>
 
         <div className="nav-right">

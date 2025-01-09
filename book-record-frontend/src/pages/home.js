@@ -66,7 +66,12 @@ function Home() {
           <button className="nav-btn" onClick={() => navigate("/record")}>
             기록
           </button>
-          <button className="nav-btn">추천</button>
+          <button
+            className="nav-btn"
+            onClick={() => navigate("/recommendation")}
+          >
+            추천
+          </button>
         </div>
 
         <div className="nav-right">
