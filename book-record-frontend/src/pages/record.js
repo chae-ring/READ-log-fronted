@@ -104,6 +104,7 @@ const RecordPage = () => {
                   }}
                   onMouseEnter={() => setHoveredDropdownItem("status")}
                   onMouseLeave={() => setHoveredDropdownItem(null)}
+                  onClick={() => navigate("/register")}
                 >
                   독서현황
                 </div>
@@ -118,14 +119,19 @@ const RecordPage = () => {
                   }}
                   onMouseEnter={() => setHoveredDropdownItem("review")}
                   onMouseLeave={() => setHoveredDropdownItem(null)}
+                  onClick={() => navigate("/register")}
                 >
                   독후감작성
                 </div>
               </div>
             )}
           </div>
-          <button className="nav-btn">내 서재</button>
-          <button className="nav-btn">로그인</button>
+          <button className="nav-btn" onClick={() => navigate("/mypage")}>
+            내 서재
+          </button>
+          <button className="nav-btn" onClick={() => navigate("/login")}>
+            로그인
+          </button>
         </div>
       </nav>
 
