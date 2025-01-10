@@ -75,10 +75,23 @@ const RecommendationPage = () => {
           >
             <button className="nav-btn">등록하기</button>
             {showDropdown && (
-              <div className="dropdown-menu">
+              <div
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  right: 0,
+                  backgroundColor: "white",
+                  boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                  borderRadius: "4px",
+                  padding: "8px 0",
+                  zIndex: 1000,
+                  minWidth: "150px",
+                }}
+              >
                 <div
-                  className="dropdown-item"
                   style={{
+                    padding: "8px 16px",
+                    cursor: "pointer",
                     backgroundColor:
                       hoveredDropdownItem === "status"
                         ? "rgba(0,0,128,0.08)"
@@ -90,8 +103,9 @@ const RecommendationPage = () => {
                   독서현황
                 </div>
                 <div
-                  className="dropdown-item"
                   style={{
+                    padding: "8px 16px",
+                    cursor: "pointer",
                     backgroundColor:
                       hoveredDropdownItem === "review"
                         ? "rgba(0,0,128,0.08)"
