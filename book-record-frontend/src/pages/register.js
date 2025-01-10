@@ -177,8 +177,12 @@ const RegisterPage = () => {
               </div>
             )}
           </div>
-          <button className="nav-btn">내 서재</button>
-          <button className="nav-btn">로그인</button>
+          <button className="nav-btn" onClick={() => navigate("/mypage")}>
+            내 서재
+          </button>
+          <button className="nav-btn" onClick={() => navigate("/login")}>
+            로그인
+          </button>
         </div>
       </nav>
 
