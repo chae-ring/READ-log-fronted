@@ -121,12 +121,12 @@ const LoginPage = () => {
       >
         <div
           className="login-container"
-          style={{ width: "100%", maxWidth: "400px" }}
+          style={{ width: "100%", maxWidth: "400px", textAlign:"center" }}
         >
           <h2 className="text-center mb-4">로그인</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>아이디</Form.Label>
+              <Form.Label>ID   </Form.Label>
               <Form.Control
                 type="text"
                 name="username"
@@ -138,7 +138,7 @@ const LoginPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Label>비밀번호</Form.Label>
+              <Form.Label>PW   </Form.Label>
               <Form.Control
                 type="password"
                 name="password"

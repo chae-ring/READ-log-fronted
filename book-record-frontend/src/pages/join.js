@@ -77,6 +77,7 @@ const JoinPage = () => {
         flexDirection: "column",
         minHeight: "100vh",
         backgroundColor: "#f5f5f5",
+        textAlign:"center",
       }}
     >
       <nav className="navbar">
@@ -125,7 +126,7 @@ const JoinPage = () => {
           <h2 className="text-center mb-4">회원가입</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>이메일</Form.Label>
+              <Form.Label>e-mail </Form.Label>
               <Form.Control
                 type="email"
                 name="email"
@@ -140,7 +141,7 @@ const JoinPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>비밀번호</Form.Label>
+              <Form.Label>PW  </Form.Label>
               <Form.Control
                 type="password"
                 name="password"
@@ -155,7 +156,7 @@ const JoinPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>비밀번호 확인</Form.Label>
+              <Form.Label>PW 확인  </Form.Label>
               <Form.Control
                 type="password"
                 name="confirmPassword"
@@ -170,7 +171,7 @@ const JoinPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Label>사용자 이름</Form.Label>
+              <Form.Label>Name  </Form.Label>
               <Form.Control
                 type="text"
                 name="username"
