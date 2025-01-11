@@ -34,6 +34,8 @@ const MyPage = () => {
         background: "#f4ead5", // 책장 색상
         borderRadius: "8px",
         boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)",
+        width: "70%", // 너비를 화면 너비의 80%로 설정
+        margin: "0 auto",  // 가로 방향 중앙 정렬
       }}
     >
       {books.map((book) => (
@@ -141,12 +143,12 @@ const MyPage = () => {
         </h2>
 
         <div style={{ marginBottom: "40px" }}>
-          <h3 style={{ color: "#000080", marginBottom: "20px" }}>읽은 책</h3>
+          <h3 style={{ color: "#000080", marginBottom: "20px", textAlign: "center" }}>읽은 책</h3>
           <BookShelf books={readBooks} isRead={true} />
         </div>
 
         <div>
-          <h3 style={{ color: "#000080", marginBottom: "20px" }}>관심 도서</h3>
+          <h3 style={{ color: "#000080", marginBottom: "20px", textAlign: "center" }}>관심 도서</h3>
           <BookShelf books={interestedBooks} isRead={false} />
         </div>
       </Container>

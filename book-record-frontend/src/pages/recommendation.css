@@ -161,12 +161,14 @@
 }
 
 .search-section .form-control {
-  height: 45px;
+  height: 30px;
   font-size: 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   padding: 0.5rem 1rem;
   transition: border-color 0.2s ease;
+  width: 93%; /* 부모 컨테이너 너비에 맞춤 */
+  max-width: 600px; /* 최대 너비를 600px로 제한 */
 }
 
 .search-section .form-control:focus {
