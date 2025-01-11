@@ -80,6 +80,7 @@
   border-radius: 4px;
   padding: 0.75rem;
   font-size: 1.1rem;
+  margin-bottom: 10px;
 }
 
 .register-form .form-control:focus {
@@ -108,11 +109,15 @@
 
 .register-form textarea {
   min-height: 150px;
+  width: 80%;
   resize: vertical;
+  margin-top: 50;
 }
 
 .register-form .form-select {
   height: 48px;
+  width: 40%; /* 가로 길이를 부모 컨테이너의 100%로 설정 */
+  max-width: 200px; /* 최대 너비를 200px로 제한 (필요 시 설정) */
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 1.1rem;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
@@ -22,34 +22,49 @@ const RegisterPage = () => {
   };
 
   const StatusForm = () => (
-    <div className="form-container">
+    <div className="form-container"
+    style={{ textAlign:"center" }}
+    >
       <Form className="register-form" onSubmit={handleSubmit}>
         <h2>독서 현황 등록</h2>
         <Form.Group className="mb-4">
-          <Form.Label>책 제목</Form.Label>
+          <Form.Label>책 제목  </Form.Label>
           <Form.Control type="text" placeholder="책 제목을 입력하세요" />
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>저자</Form.Label>
+          <Form.Label>저자  </Form.Label>
           <Form.Control type="text" placeholder="저자를 입력하세요" />
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>독서 상태</Form.Label>
+          <Form.Label>독서 상태  </Form.Label>
           <Form.Select>
             <option>읽기 시작</option>
             <option>읽는 중</option>
+            <option>완독</option>
           </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>시작일</Form.Label>
+          <Form.Label>카테고리  </Form.Label>
+          <Form.Select>
+            <option>소설</option>
+            <option>자기계발</option>
+            <option>과학</option>
+            <option>역사</option>
+            <option>예술</option>
+            <option>기타</option>
+          </Form.Select>
+        </Form.Group>
+
+        <Form.Group className="mb-4">
+          <Form.Label>시작일  </Form.Label>
           <Form.Control type="date" />
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>종료일</Form.Label>
+          <Form.Label>종료일  </Form.Label>
           <Form.Control type="date" />
         </Form.Group>
 
@@ -61,21 +76,23 @@ const RegisterPage = () => {
   );
 
   const ReviewForm = () => (
-    <div className="form-container">
+    <div className="form-container"
+    style={{ textAlign:"center" }}
+    >
       <Form className="register-form" onSubmit={handleSubmit}>
         <h2>독후감 작성</h2>
         <Form.Group className="mb-4">
-          <Form.Label>책 제목</Form.Label>
+          <Form.Label>책 제목  </Form.Label>
           <Form.Control type="text" placeholder="책 제목을 입력하세요" />
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>저자</Form.Label>
+          <Form.Label>저자  </Form.Label>
           <Form.Control type="text" placeholder="저자를 입력하세요" />
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>평점</Form.Label>
+          <Form.Label>평점  </Form.Label>
           <Form.Select>
             <option>5점</option>
             <option>4점</option>
@@ -86,7 +103,7 @@ const RegisterPage = () => {
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>독후감</Form.Label>
+          <Form.Label>독후감  </Form.Label>
           <Form.Control
             as="textarea"
             rows={5}
