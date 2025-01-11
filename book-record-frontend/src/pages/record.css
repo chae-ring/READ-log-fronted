@@ -160,6 +160,10 @@
   padding: 1.5rem;
   display: flex;
   justify-content: center;
+  background-color: rgba(68, 71, 85, 0.7); /* 투명도 70% */
+  border-radius: 8px; /* 둥근 모서리 */
+  border: 1px solid #e0e0e0; /* 요소의 테두리를 두께 1px, 실선(solid), 색상은 연한 회색(#e0e0e0)으로 설정 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 독후감 아이템 스타일 */
