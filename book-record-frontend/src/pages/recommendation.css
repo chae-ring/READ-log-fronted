@@ -80,15 +80,24 @@
 }
 
 .recommendation-section h2 {
-  font-size: 1.8rem;
-  color: #000080;
+  font-size: 1.6rem;
+  color: #3232be;
   margin-bottom: 1rem;
 }
 
 .section-description {
-  color: #666;
+  color: #ffffff;
   font-size: 1rem;
   margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 제목 상자 스타일 */
+.recommendation-title {
+  display: inline-block;      /* 글자 크기에 맞게 상자 크기 조정 */
+  background-color: rgba(204, 208, 240, 0.9); /* 반투명한 검정 배경 */
+  padding: 0.3rem 1rem !important;       /* 상자 안쪽 여백 */
+  border-radius: 30px !important;         /* 모서리 둥글게 */
 }
 
 /* 책 카드 스타일 */
@@ -110,6 +119,8 @@
   border-radius: 8px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* 배경색 추가 + 약간의 투명도 */
+  backdrop-filter: blur(4px); /* 배경 흐림 효과 추가 */
 }
 
 .book-card:hover {
@@ -136,19 +147,19 @@
 .book-card .card-title {
   font-size: 1rem;
   font-weight: 600;
-  color: #333;
+  color: #b0bff1;
   margin-bottom: 0.3rem;
 }
 
 .book-card .card-subtitle {
   font-size: 0.8rem;
-  color: #666;
+  color: #ba97dd;
   margin-bottom: 0.8rem;
 }
 
 .book-card .card-text {
   font-size: 0.85rem;
-  color: #444;
+  color: #ffffff;
   line-height: 1.4;
 }
 
@@ -156,8 +167,9 @@
 .search-section {
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: rgba(211, 210, 222, 0.9);
   border-radius: 8px;
+  max-width: 800px; /* 최대 너비 */
 }
 
 .search-section .form-control {

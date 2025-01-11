@@ -132,7 +132,7 @@ const RecommendationPage = () => {
 
       <Container className="recommendation-container">
         <section className="recommendation-section">
-          <h2>작가 기반 추천</h2>
+        <h2 className="recommendation-title">작가 기반 추천</h2>
           <p className="section-description">
             당신이 읽은 작가의 다른 작품과 유사한 작가들의 작품을
             추천해드립니다.
@@ -158,7 +158,7 @@ const RecommendationPage = () => {
         </section>
 
         <section className="recommendation-section">
-          <h2>카테고리 기반 추천</h2>
+        <h2 className="recommendation-title">카테고리 기반 추천</h2>
           <p className="section-description">
             당신이 관심있는 카테고리의 다른 책들을 추천해드립니다.
           </p>
