@@ -37,7 +37,7 @@ const RegisterPage = () => {
           <Form.Control type="text" placeholder="저자를 입력하세요" />
         </Form.Group>
 
-        <Form.Group className="mb-4">
+        <Form.Group className="mb-4" style={{ marginBottom: "0.5rem" }}>
           <Form.Label>독서 상태  </Form.Label>
           <Form.Select>
             <option>읽기 시작</option>
@@ -46,7 +46,7 @@ const RegisterPage = () => {
           </Form.Select>
         </Form.Group>
 
-        <Form.Group className="mb-4">
+        <Form.Group className="mb-4" style={{ marginBottom: "0.5rem" }}>
           <Form.Label>카테고리  </Form.Label>
           <Form.Select>
             <option>소설</option>
@@ -91,7 +91,7 @@ const RegisterPage = () => {
           <Form.Control type="text" placeholder="저자를 입력하세요" />
         </Form.Group>
 
-        <Form.Group className="mb-4">
+        <Form.Group className="mb-4" style={{ marginBottom: "0.5rem" }}>
           <Form.Label>평점  </Form.Label>
           <Form.Select>
             <option>5점</option>
