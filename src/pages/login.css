@@ -1,0 +1,73 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+}
+
+.login-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 버튼 가운데 정렬 */
+  gap: 0.5rem; /* 버튼 사이 간격 */
+}
+
+.login-container h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-control {
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn {
+  padding: 0.75rem;
+  font-weight: 500;
+  border-radius: 20px;
+  display: inline-block; /* 버튼 크기 조정을 위해 필요 */
+  width: 200px;  /* 버튼 너비 고정 */
+  text-align: center; /* 텍스트 정렬 */
+  margin-bottom: 0.5rem; /* 버튼 사이 간격 추가 */
+}
+
+.btn-primary {
+  color: white !important;
+  background-color: #8694ff !important;
+  border-color: #8694ff !important;
+}
+
+.btn-primary:hover {
+  color: black !important;
+}
+
+.btn-outline-primary {
+  color: white !important;
+  background-color: #8694ff !important;
+  border: none !important; /* 보더라인 제거 */
+}
+       
+.btn-outline-primary:hover {
+  color: black !important;
+  background-color: #8694ff !important;
+  border: none !important; /* 보더라인 제거 */
+}

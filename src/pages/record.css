@@ -1,0 +1,187 @@
+/* 전체 페이지 스타일 */
+.home {
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+}
+
+/* 네비게이션 바 스타일 */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.nav-left .logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000080;
+}
+
+.nav-center {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-right {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+  color: #000080;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.nav-btn:hover {
+  background-color: rgba(0, 0, 128, 0.08);
+  transform: translateY(-1px);
+}
+
+.nav-btn.active {
+  background-color: rgba(0, 0, 128, 0.1);
+  font-weight: 600;
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-menu {
+  min-width: 150px;
+  padding: 0.5rem 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #000080;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(0, 0, 128, 0.08);
+  color: #000080;
+  transform: translateX(5px);
+}
+
+.nav-btn .dropdown-item {
+  padding: 0.5rem 1rem;
+  color: #000080;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-btn .dropdown-item:hover {
+  background-color: rgba(0, 0, 128, 0.08);
+  color: #000080;
+}
+
+/* 사이드 탭 스타일 */
+.side-tab {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: fixed;
+  right: 2rem;
+  width: 150px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.side-tab:first-child {
+  top: 100px;
+}
+
+.side-tab:last-child {
+  top: 160px;
+}
+
+.side-tab:hover {
+  background-color: rgba(0, 0, 128, 0.08);
+}
+
+.side-tab.active {
+  background-color: rgba(0, 0, 128, 0.1);
+  font-weight: 600;
+}
+
+.tab-icon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.tab-text {
+  font-size: 0.95rem;
+  color: #000080;
+}
+
+/* 카드 스타일 */
+.card {
+  margin: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: calc(50% - 2rem);
+  display: inline-block;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(68, 71, 85, 0.7); /* 투명도 70% */
+  border-radius: 8px; /* 둥근 모서리 */
+  border: 1px solid #e0e0e0; /* 요소의 테두리를 두께 1px, 실선(solid), 색상은 연한 회색(#e0e0e0)으로 설정 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 독후감 아이템 스타일 */
+.review-item {
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-item h4 {
+  color: #bacdff;
+  margin-bottom: 0.5rem;
+}
+
+.review-item p {
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
