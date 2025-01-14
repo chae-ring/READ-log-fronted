@@ -139,7 +139,6 @@ const MyPage = () => {
           <h3 style={{ color: "#000080", marginBottom: "20px", textAlign: "center" }}>읽은 책</h3>
           <BookShelf books={readBooks} isRead={true} />
         </div>
-
       </Container>
     </div>
   );
