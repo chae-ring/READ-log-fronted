@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
-import { postLogin } from "../api/instance";  // 로그인 API 추가
+import { postLogin } from "../api/instance"; // 로그인 API 추가
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",  // nickname → email로 변경
+    email: "", // nickname → email로 변경
     password: "",
   });
 
@@ -24,16 +24,17 @@ const LoginPage = () => {
 
     try {
       const result = await postLogin({
-        email: formData.email,  // email로 변경
+        email: formData.email,
         password: formData.password,
       });
 
       console.log("로그인 응답값:", result);
 
-      if (result.status === 204 || result.token) {
-        // 로그인 성공 시
+      // 로그인 성공 시
+      if (result.accessToken) {
         alert("로그인 성공!");
-        navigate("/mypage");  // 마이페이지로 이동
+        localStorage.setItem("accessToken", result.accessToken); // 토큰 저장
+        navigate("/home"); // 마이페이지로 이동
       } else {
         alert("로그인 실패. 이메일과 비밀번호를 확인하세요.");
       }
@@ -56,18 +57,37 @@ const LoginPage = () => {
 
         <div className="nav-center">
           <button className="nav-btn">독서현황</button>
-          <button className="nav-btn" onClick={() => navigate("/record")}>기록</button>
-          <button className="nav-btn" onClick={() => navigate("/recommendation")}>추천</button>
+          <button className="nav-btn" onClick={() => navigate("/record")}>
+            기록
+          </button>
+          <button
+            className="nav-btn"
+            onClick={() => navigate("/recommendation")}
+          >
+            추천
+          </button>
         </div>
 
         <div className="nav-right">
-          <button className="nav-btn" onClick={() => navigate("/mypage")}>내 서재</button>
+          <button className="nav-btn" onClick={() => navigate("/mypage")}>
+            내 서재
+          </button>
           <button className="nav-btn active">로그인</button>
         </div>
       </nav>
 
-      <Container style={{ height: "calc(100vh - 60px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div className="login-container" style={{ width: "100%", maxWidth: "400px", textAlign: "center" }}>
+      <Container
+        style={{
+          height: "calc(100vh - 60px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          className="login-container"
+          style={{ width: "100%", maxWidth: "400px", textAlign: "center" }}
+        >
           <h2 className="text-center mb-4">로그인</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">

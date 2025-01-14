@@ -118,10 +118,7 @@ const JoinPage = () => {
           <button className="nav-btn" onClick={() => navigate("/record")}>
             기록
           </button>
-          <button
-            className="nav-btn"
-            onClick={() => navigate("/mypage")}
-          >
+          <button className="nav-btn" onClick={() => navigate("/mypage")}>
             내 서재
           </button>
         </div>
