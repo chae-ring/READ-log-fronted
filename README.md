@@ -50,8 +50,6 @@ npm run build
 ```
 ---
   
----
-
 ## 📞 기타
 
 - 백엔드 레포지토리: https://github.com/chae-ring/READ-log-backend
