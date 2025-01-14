@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Button, Card, Dropdown } from "react-bootstrap";
+import { Container, Row, Col, Button, Card, Dropdown, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart,
@@ -51,6 +51,33 @@ const RecordPage = () => {
     { name: "읽을 예정", value: 5 },
     { name: "완독", value: 12 },
   ];
+
+  // 독후감 상태
+  const [reviews, setReviews] = useState([
+    { id: 1, title: "책 제목 1", date: "2024-01-15", content: "독후감 내용 미리보기..." },
+    { id: 2, title: "책 제목 2", date: "2024-01-16", content: "독후감 내용 미리보기..." },
+  ]);
+  const [editReview, setEditReview] = useState(null); // 수정할 독후감 데이터
+
+  // 수정 시작
+  const handleEditReview = (review) => {
+    setEditReview(review);
+  };
+
+  // 수정된 독후감 저장
+  const handleSaveEditReview = () => {
+    setReviews((prevReviews) =>
+      prevReviews.map((review) =>
+        review.id === editReview.id ? { ...review, ...editReview } : review
+      )
+    );
+    setEditReview(null);
+  };
+
+  // 삭제
+  const handleDeleteReview = (id) => {
+    setReviews((prevReviews) => prevReviews.filter((review) => review.id !== id));
+  };
 
   return (
     <div className="home">
@@ -136,9 +163,7 @@ const RecordPage = () => {
         <Row>
           <Col md={2}>
             <div
-              className={`side-tab ${
-                activeTab === "statistics" ? "active" : ""
-              }`}
+              className={`side-tab ${activeTab === "statistics" ? "active" : ""}`}
               onClick={() => setActiveTab("statistics")}
             >
               <span className="tab-icon">📊</span>
@@ -224,12 +249,44 @@ const RecordPage = () => {
               <div>
                 <Card>
                   <Card.Body>
-                    {/* 독후감 목록을 map으로 렌더링 */}
-                    <div className="review-item">
-                      <h4>책 제목</h4>
-                      <p>작성일: 2024-01-15</p>
-                      <p>독후감 내용 미리보기...</p>
-                    </div>
+                    {/* 독후감 목록을 렌더링 */}
+                    {reviews.map((review) => (
+                      <div key={review.id} className="review-item" style={{ marginBottom: "15px" }}>
+                        {editReview?.id === review.id ? (
+                          <div>
+                            <Form.Control
+                              type="text"
+                              value={editReview.title}
+                              onChange={(e) => setEditReview({ ...editReview, title: e.target.value })}
+                            />
+                            <Form.Control
+                              as="textarea"
+                              rows={3}
+                              value={editReview.content}
+                              onChange={(e) => setEditReview({ ...editReview, content: e.target.value })}
+                            />
+                            <Button variant="success" onClick={handleSaveEditReview}
+                              style={{ padding: "4px 15px", width: "50px"}} 
+                              >저장</Button>
+                            <Button variant="secondary" onClick={() => setEditReview(null)}
+                              style={{ padding: "4px 15px", width: "50px"}} 
+                              >취소</Button>
+                          </div>
+                        ) : (
+                          <div>
+                            <h4>{review.title}</h4>
+                            <p>작성일: {review.date}</p>
+                            <p>{review.content}</p>
+                            <Button variant="warning" onClick={() => handleEditReview(review)} 
+                              style={{ padding: "4px 15px", width: "50px"}} 
+                              >수정</Button>
+                            <Button variant="danger" onClick={() => handleDeleteReview(review.id)} 
+                              style={{ padding: "4px 15px", width: "50px" }} 
+                              >삭제</Button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </Card.Body>
                 </Card>
               </div>

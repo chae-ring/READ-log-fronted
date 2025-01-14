@@ -18,7 +18,6 @@ const MyPage = () => {
     { id: 3, title: "데미안", author: "헤르만 헤세", readDate: "2023-07" },
   ];
   
-
   const BookShelf = ({ books, isRead }) => (
     <div
       style={{
@@ -127,17 +126,34 @@ const MyPage = () => {
       <Container style={{ marginTop: "40px" }}>
         <h2
           style={{
-            textAlign: "center",
-            color: "#000080",
-            marginBottom: "30px",
-            fontWeight: "bold",
+            border: "2px solid #000080", // 파란색 테두리
+            padding: "10px", // 내부 여백
+            borderRadius: "10px", // 둥근 테두리
+            backgroundColor: "#f0f8ff", // 연한 파란색 배경
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 그림자 효과
+            maxWidth: "200px", // 박스 최대 너비
+            margin: "0 auto", // 화면 중앙 정렬
+            textAlign: "center", // 텍스트 가운데 정렬
+            marginBottom: "20px",
           }}
         >
-          나의 서재
+          토마토 님의 서재
         </h2>
-
+        
         <div style={{ marginBottom: "40px" }}>
-          <h3 style={{ color: "#000080", marginBottom: "20px", textAlign: "center" }}>읽은 책</h3>
+          <h3 
+            style={{ 
+              border: "2px solid #000080", // 파란색 테두리
+              padding: "5px", // 내부 여백
+              borderRadius: "10px", // 둥근 테두리
+              backgroundColor: "#f0f8ff", // 연한 파란색 배경
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 그림자 효과
+              maxWidth: "100px", // 박스 최대 너비
+              margin: "0 auto", // 화면 중앙 정렬
+              textAlign: "center", // 텍스트 가운데 정렬 
+              marginBottom: "20px",
+            }}
+            >읽은 책</h3>
           <BookShelf books={readBooks} isRead={true} />
         </div>
       </Container>

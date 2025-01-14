@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./join.css";
+import { postSignup } from "../api/instance";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -52,20 +53,45 @@ const JoinPage = () => {
     }
 
     // 사용자 이름 검증
-    if (!formData.username) {
-      newErrors.username = "사용자 이름을 입력해주세요";
+    if (!formData.nickname) {
+      newErrors.nickname = "사용자 이름을 입력해주세요";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       // TODO: API 호출하여 회원가입 처리
       console.log("회원가입 데이터:", formData);
-      navigate("/login"); // 회원가입 성공 시 로그인 페이지로 이동
+
+      const result = await postSignup(
+        formData.email,
+        formData.password,
+        formData.nickname
+      );
+
+      // api 응답값을 찍어보고, 성공/에러 처리를 하면 됩니다.
+      // 지금 저는 제대로된 접근이 어려워 상세한 응답값 확인이 안되는 상태입니다.
+      // 백엔드 개발자에 따라 status를 안보내주기도 하기 때문에 확인이 필요해요.
+      console.log("회원가입 응답값 확인하여 성공/에러 처리 하세요.");
+      console.log(result);
+
+      if (result.status === 201 || result.data?.userId) {
+        // 보통은 성공하면 status에 200이나 201이 담겨옵니다.
+        // status가 담겨온다면 201로 진행하시면 되고, 뒤에 result.data?.userId삭제하시면 됩니다.
+        // status가 없다면, result.data.uerId 값이 있는지 없는지를 확인해서 성공여부를 판단하면 될 것 같아요.
+
+        // 회원가입 성공 시 로그인 페이지로 이동
+        navigate("/login");
+        return; // 코드 진행 종료
+      }
+
+      // 실패한 경우 보통 400~500 번대의 status가 날아옵니다.
+      // 백엔드 개발자에 따라 status를 안보내주기도 하기 때문에 확인이 필요해요.
+      alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -77,7 +103,7 @@ const JoinPage = () => {
         flexDirection: "column",
         minHeight: "100vh",
         backgroundColor: "#f5f5f5",
-        textAlign:"center",
+        textAlign: "center",
       }}
     >
       <nav className="navbar">
@@ -138,7 +164,7 @@ const JoinPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>PW  </Form.Label>
+              <Form.Label>PW </Form.Label>
               <Form.Control
                 type="password"
                 name="password"
@@ -153,7 +179,7 @@ const JoinPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>PW 확인  </Form.Label>
+              <Form.Label>PW 확인 </Form.Label>
               <Form.Control
                 type="password"
                 name="confirmPassword"
@@ -168,17 +194,17 @@ const JoinPage = () => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Label>Name  </Form.Label>
+              <Form.Label>Name </Form.Label>
               <Form.Control
                 type="text"
-                name="username"
-                value={formData.username}
+                name="nickname"
+                value={formData.nickname}
                 onChange={handleChange}
-                isInvalid={!!errors.username}
+                isInvalid={!!errors.nickname}
                 placeholder="사용자 이름을 입력하세요"
               />
               <Form.Control.Feedback type="invalid">
-                {errors.username}
+                {errors.nickname}
               </Form.Control.Feedback>
             </Form.Group>
 
