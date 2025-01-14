@@ -18,12 +18,6 @@ const MyPage = () => {
     { id: 3, title: "데미안", author: "헤르만 헤세", readDate: "2023-07" },
   ];
 
-  const interestedBooks = [
-    { id: 1, title: "사피엔스", author: "유발 하라리" },
-    { id: 2, title: "아몬드", author: "손원평" },
-    { id: 3, title: "이기적 유전자", author: "리처드 도킨스" },
-  ];
-
   const BookShelf = ({ books, isRead }) => (
     <div
       style={{
@@ -146,10 +140,6 @@ const MyPage = () => {
           <BookShelf books={readBooks} isRead={true} />
         </div>
 
-        <div>
-          <h3 style={{ color: "#000080", marginBottom: "20px", textAlign: "center" }}>관심 도서</h3>
-          <BookShelf books={interestedBooks} isRead={false} />
-        </div>
       </Container>
     </div>
   );
