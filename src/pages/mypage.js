@@ -113,9 +113,9 @@ const MyPage = () => {
           </button>
           <button
             className="nav-btn"
-            onClick={() => navigate("/recommendation")}
+            onClick={() => navigate("/mypage")}
           >
-            추천
+            내 서재
           </button>
         </div>
 
@@ -123,7 +123,6 @@ const MyPage = () => {
           <button className="nav-btn" onClick={() => navigate("/register")}>
             등록하기
           </button>
-          <button className="nav-btn active">내 서재</button>
           <button className="nav-btn" onClick={() => navigate("/login")}>
             로그인
           </button>

@@ -94,18 +94,15 @@ const JoinPage = () => {
           </button>
           <button
             className="nav-btn"
-            onClick={() => navigate("/recommendation")}
+            onClick={() => navigate("/mypage")}
           >
-            추천
+            내 서재
           </button>
         </div>
 
         <div className="nav-right">
           <button className="nav-btn" onClick={() => navigate("/register")}>
             등록하기
-          </button>
-          <button className="nav-btn" onClick={() => navigate("/mypage")}>
-            내 서재
           </button>
           <button className="nav-btn active">로그인</button>
         </div>

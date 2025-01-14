@@ -25,12 +25,12 @@
 
 .nav-center {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .nav-right {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .nav-btn {

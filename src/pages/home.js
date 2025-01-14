@@ -68,9 +68,9 @@ function Home() {
           </button>
           <button
             className="nav-btn"
-            onClick={() => navigate("/recommendation")}
+            onClick={() => navigate("/mypage")}
           >
-            추천
+            내 서재
           </button>
         </div>
 
@@ -128,9 +128,6 @@ function Home() {
               </div>
             )}
           </div>
-          <button className="nav-btn" onClick={() => navigate("/mypage")}>
-            내 서재
-          </button>
           <button className="nav-btn" onClick={() => navigate("/login")}>
             로그인
           </button>
