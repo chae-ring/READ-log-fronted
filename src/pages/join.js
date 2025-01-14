@@ -63,35 +63,34 @@ const JoinPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
-      // TODO: API 호출하여 회원가입 처리
-      console.log("회원가입 데이터:", formData);
+      try {
+        // 회원가입 API 호출
+        const result = await postSignup({
+          email: formData.email,
+          password: formData.password,
+          nickname: formData.nickname,
+        });
 
-      const result = await postSignup(
-        formData.email,
-        formData.password,
-        formData.nickname
-      );
+        console.log("회원가입 응답값:", result);
 
-      // api 응답값을 찍어보고, 성공/에러 처리를 하면 됩니다.
-      // 지금 저는 제대로된 접근이 어려워 상세한 응답값 확인이 안되는 상태입니다.
-      // 백엔드 개발자에 따라 status를 안보내주기도 하기 때문에 확인이 필요해요.
-      console.log("회원가입 응답값 확인하여 성공/에러 처리 하세요.");
-      console.log(result);
+        // 오류 메시지가 있는 경우 출력
+        if (result.data?.message) {
+          alert(result.data.message.join(", "));
+        }
 
-      if (result.status === 201 || result.data?.userId) {
-        // 보통은 성공하면 status에 200이나 201이 담겨옵니다.
-        // status가 담겨온다면 201로 진행하시면 되고, 뒤에 result.data?.userId삭제하시면 됩니다.
-        // status가 없다면, result.data.uerId 값이 있는지 없는지를 확인해서 성공여부를 판단하면 될 것 같아요.
-
-        // 회원가입 성공 시 로그인 페이지로 이동
-        navigate("/login");
-        return; // 코드 진행 종료
+        // 회원가입 성공 시
+        if (result.userId) {
+          alert("회원가입 성공!");
+          navigate("/login"); // 로그인 페이지로 이동
+        } else {
+          alert("회원가입 실패. 다시 시도해 주세요.");
+        }
+      } catch (error) {
+        console.error("회원가입 에러:", error);
+        alert("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
       }
-
-      // 실패한 경우 보통 400~500 번대의 status가 날아옵니다.
-      // 백엔드 개발자에 따라 status를 안보내주기도 하기 때문에 확인이 필요해요.
-      alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
