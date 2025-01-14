@@ -17,6 +17,7 @@ const MyPage = () => {
     { id: 2, title: "1984", author: "조지 오웰", readDate: "2023-06" },
     { id: 3, title: "데미안", author: "헤르만 헤세", readDate: "2023-07" },
   ];
+  
 
   const BookShelf = ({ books, isRead }) => (
     <div
