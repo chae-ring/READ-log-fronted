@@ -20,13 +20,16 @@ const RegisterPage = () => {
   });
 
   const [statusFormData, setStatusFormData] = useState({
-    title: "",
-    author: "",
-    status: "읽기 시작",
-    category: "소설",
-    startDate: "",
-    endDate: ""
+    name: "",             // 책 제목
+    writer: "",           // 저자
+    status: "READING",    // 독서 상태
+    genre: "NOVEL",       // 카테고리
+    startReadDate: "",    // 시작일
+    lastReadDate: "",     // 종료일
+    currentPage: 0,       // 현재 페이지
+    totalPage: 0          // 전체 페이지
   });
+  
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -41,6 +44,11 @@ const RegisterPage = () => {
     setShowConfirm(true);
   };
 
+
+  // 일단 넣기
+
+  // 끝 
+
   const handleConfirm = async () => {
     try {
       let response;
@@ -48,10 +56,10 @@ const RegisterPage = () => {
       if (activeTab === "review") {
         response = await postReview(reviewFormData);
       } else {
-        response = await postStatus(statusFormData);
+        response = await postStatus(statusFormData);  // 수정 필요 없음
       }
-
-      if (response.data?.success) {
+  
+      if (response.status === 201 || response.status === 204) {
         alert(activeTab === "review" ? '독후감이 성공적으로 등록되었습니다.' : '독서 현황이 성공적으로 등록되었습니다.');
         navigate('/reviews');
       } else {
@@ -64,6 +72,7 @@ const RegisterPage = () => {
       setShowConfirm(false);
     }
   };
+  
 
   const handleReviewInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,10 +97,10 @@ const RegisterPage = () => {
         <Form.Group className="mb-4">
           <Form.Label>책 제목  </Form.Label>
           <Form.Control 
-            type="text" 
+            type="String" 
             placeholder="책 제목을 입력하세요"
-            name="title"
-            value={statusFormData.title}
+            name="name"
+            value={statusFormData.name}
             onChange={handleStatusInputChange}
           />
         </Form.Group>
@@ -99,10 +108,10 @@ const RegisterPage = () => {
         <Form.Group className="mb-4">
           <Form.Label>저자  </Form.Label>
           <Form.Control 
-            type="text" 
+            type="String" 
             placeholder="저자를 입력하세요"
-            name="author"
-            value={statusFormData.author}
+            name="writer"
+            value={statusFormData.writer}
             onChange={handleStatusInputChange}
           />
         </Form.Group>
@@ -114,25 +123,24 @@ const RegisterPage = () => {
             value={statusFormData.status}
             onChange={handleStatusInputChange}
           >
-            <option value="읽기 시작">읽기 시작</option>
-            <option value="읽는 중">읽는 중</option>
-            <option value="완독">완독</option>
+            <option value="READING">읽기 시작</option>
+            <option value="COMPLETED">완독</option>
+            <option value="ABANDONED">읽는 중</option>
           </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-4" style={{ marginBottom: "0.5rem" }}>
           <Form.Label>카테고리  </Form.Label>
           <Form.Select
-            name="category"
-            value={statusFormData.category}
+            name="genre"
+            value={statusFormData.genre}
             onChange={handleStatusInputChange}
           >
-            <option value="소설">소설</option>
-            <option value="자기계발">자기계발</option>
-            <option value="과학">과학</option>
-            <option value="역사">역사</option>
-            <option value="예술">예술</option>
-            <option value="기타">기타</option>
+            <option value="NOVEL">소설</option>
+            <option value="NONFICTION">논픽션</option>
+            <option value="SELFHELP">자기계발</option>
+            <option value="FANTASY">판타지</option>
+            <option value="MYSTERY">미스터리</option>
           </Form.Select>
         </Form.Group>
 
@@ -140,8 +148,8 @@ const RegisterPage = () => {
           <Form.Label>시작일  </Form.Label>
           <Form.Control 
             type="date"
-            name="startDate"
-            value={statusFormData.startDate}
+            name="startReadDate"
+            value={statusFormData.startReadDate}
             onChange={handleStatusInputChange}
           />
         </Form.Group>
@@ -150,8 +158,8 @@ const RegisterPage = () => {
           <Form.Label>종료일  </Form.Label>
           <Form.Control 
             type="date"
-            name="endDate"
-            value={statusFormData.endDate}
+            name="lastReadDate"
+            value={statusFormData.lastReadDate}
             onChange={handleStatusInputChange}
           />
         </Form.Group>
@@ -163,6 +171,11 @@ const RegisterPage = () => {
     </div>
   );
 
+
+
+/***
+ * 독후감 작성 홈페이지
+ */
   const ReviewForm = () => (
     <div className="form-container" style={{ textAlign:"center" }}>
       <Form className="register-form" onSubmit={handleSubmit}>
@@ -170,7 +183,7 @@ const RegisterPage = () => {
         <Form.Group className="mb-4">
           <Form.Label>책 제목  </Form.Label>
           <Form.Control 
-            type="text" 
+            type="String" 
             placeholder="책 제목을 입력하세요"
             name="title"
             value={reviewFormData.title}
@@ -181,7 +194,7 @@ const RegisterPage = () => {
         <Form.Group className="mb-4">
           <Form.Label>저자  </Form.Label>
           <Form.Control 
-            type="text" 
+            type="String" 
             placeholder="저자를 입력하세요"
             name="author"
             value={reviewFormData.author}
@@ -204,17 +217,7 @@ const RegisterPage = () => {
           </Form.Select>
         </Form.Group>
 
-        <Form.Group className="mb-4">
-          <Form.Label>독후감  </Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={5}
-            placeholder="독후감을 작성해주세요"
-            name="content"
-            value={reviewFormData.content}
-            onChange={handleReviewInputChange}
-          />
-        </Form.Group>
+        lastReadDate
 
         <Button variant="primary" type="submit">
           등록하기
