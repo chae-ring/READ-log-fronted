@@ -15,6 +15,14 @@ const axiosInstance = axios.create({
   },
 });
 
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export const postSignup = async ({ email, password, nickname }) => {
   try {
     const response = await axiosInstance.post(`/auth/signup`, {
@@ -56,4 +64,81 @@ export const postLogin = async ({ email, password }) => {
       }
     );
   }
+};
+
+/**
+ * 독후감 작성 함수
+ * @param {Object} param0 - 리뷰 정보 (title, content, rating)
+ */
+export const postReview = async ({ title, content, rating }) => {
+  try {
+    const response = await axiosInstance.post(`/reviews`, {
+      title,
+      content,
+      rating,
+    });
+    return response.data;
+  } catch (e) {
+    console.error("리뷰 작성 에러:", e.response?.data || e.message);
+    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+  }
+};
+
+/**
+ * 독서 현황 등록 함수
+ * @param {Object} param0 - 독서 현황 정보 (title, author, status, category, startDate, endDate)
+ */
+export const postStatus = async ({ title, author, status, category, startDate, endDate }) => {
+  try {
+    const response = await axiosInstance.post(`/readings`, {
+      title,
+      author,
+      status,
+      category,
+      startDate,
+      endDate,
+    });
+    return response.data;
+  } catch (e) {
+    console.error("독서 현황 등록 에러:", e.response?.data || e.message);
+    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+  }
+};
+
+/**
+ * 독후감 수정 함수
+ * @param {Object} param0 - 리뷰 정보 (id, title, content, rating)
+ */
+export const updateReview = async ({ id, title, content, rating }) => {
+  try {
+    const response = await axiosInstance.patch(`/reviews/${id}`, {
+      title,
+      content,
+      rating,
+    });
+    return response.data;
+  } catch (e) {
+    console.error("리뷰 수정 에러:", e.response?.data || e.message);
+    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+  }
+};
+
+/**
+ * 독후감 삭제 함수
+ * @param {number} id - 삭제할 리뷰 ID
+ */
+export const deleteReview = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/reviews/${id}`);
+    return response.data;
+  } catch (e) {
+    console.error("리뷰 삭제 에러:", e.response?.data || e.message);
+    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+  }
+};
+
+// 독후감 목록 조회
+export const getReviews = async () => {
+  const response = await axiosInstance.get("/reviews");
+  return response.data;
 };
