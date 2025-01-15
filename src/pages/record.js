@@ -13,6 +13,9 @@ import {
   Pie,
 } from "recharts";
 import "./record.css";
+import { updateReview } from "../api/instance";  // 수정 API 추가
+import { deleteReview } from "../api/instance";  // 삭제 API 추가
+
 
 const RecordPage = () => {
   const navigate = useNavigate();
@@ -64,20 +67,51 @@ const RecordPage = () => {
     setEditReview(review);
   };
 
-  // 수정된 독후감 저장
-  const handleSaveEditReview = () => {
-    setReviews((prevReviews) =>
-      prevReviews.map((review) =>
-        review.id === editReview.id ? { ...review, ...editReview } : review
-      )
-    );
-    setEditReview(null);
-  };
+// 수정된 독후감 저장
+const handleSaveEditReview = async () => {
+  try {
+    const { id, title, content } = editReview;
+
+    // 수정 API 호출
+    const response = await updateReview({ id, title, content });
+
+    if (response.status === 200 || response.success) {
+      alert("독후감이 성공적으로 수정되었습니다.");
+
+      // 상태 업데이트 (프론트엔드에서도 반영)
+      setReviews((prevReviews) =>
+        prevReviews.map((review) =>
+          review.id === editReview.id ? { ...review, ...editReview } : review
+        )
+      );
+      setEditReview(null);
+    } else {
+      throw new Error(response.data?.message || "독후감 수정에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("독후감 수정 실패:", error);
+    alert(error.message || "독후감 수정 중 오류가 발생했습니다.");
+  }
+};
 
   // 삭제
-  const handleDeleteReview = (id) => {
-    setReviews((prevReviews) => prevReviews.filter((review) => review.id !== id));
-  };
+const handleDeleteReview = async (id) => {
+  if (window.confirm("정말 삭제하시겠습니까?")) {
+    try {
+      const response = await deleteReview(id);
+
+      if (response.status === 200 || response.success) {
+        alert("독후감이 성공적으로 삭제되었습니다.");
+        setReviews((prevReviews) => prevReviews.filter((review) => review.id !== id));
+      } else {
+        throw new Error(response.data?.message || "독후감 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("독후감 삭제 실패:", error);
+      alert(error.message || "독후감 삭제 중 오류가 발생했습니다.");
+    }
+  }
+};
 
   return (
     <div className="home">
