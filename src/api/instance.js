@@ -195,3 +195,59 @@ export const getFinishedBooks = async (token) => {
     throw new Error("사용자 정보 조회에 실패했습니다.");
   }
 };
+export const getYearlyData = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/reviews/yearly`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("서버 응답:", response);
+    return response.data;
+  } catch (error) {
+    console.error("사용자 정보 조회 실패:", error);
+    throw new Error("사용자 정보 조회에 실패했습니다.");
+  }
+};
+export const getMonthlyData = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/reviews/monthly`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("서버 응답:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("사용자 정보 조회 실패:", error);
+    throw new Error("사용자 정보 조회에 실패했습니다.");
+  }
+};
+export const getCategoryData = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/reviews/genre`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("서버 응답:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("사용자 정보 조회 실패:", error);
+    throw new Error("사용자 정보 조회에 실패했습니다.");
+  }
+};
+export const getStatusData = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/reviews/status`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("서버 응답:", response);
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    console.error("사용자 정보 조회 실패:", error);
+    throw new Error("사용자 정보 조회에 실패했습니다.");
+  }
+};

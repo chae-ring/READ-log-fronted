@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Button, Card, Dropdown, Form } from "react-bootstrap";
+import React, { useState, useEffect } from "react"; // Add useEffect
+import { Container, Row, Col, Button, Card, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart,
@@ -13,105 +13,89 @@ import {
   Pie,
 } from "recharts";
 import "./record.css";
-import { updateReview } from "../api/instance";  // 수정 API 추가
-import { deleteReview } from "../api/instance";  // 삭제 API 추가
-
+import {
+  updateReview,
+  deleteReview,
+  getYearlyData,
+  getMonthlyData,
+  getCategoryData,
+  getStatusData,
+} from "../api/instance";
 
 const RecordPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("statistics");
+  const [yearlyData, setYearlyData] = useState([]);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const [statusData, setStatusData] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [hoveredDropdownItem, setHoveredDropdownItem] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [editReview, setEditReview] = useState(null);
 
-  // 샘플 데이터 - 실제 데이터로 교체 필요
-  const monthlyData = [
-    { month: "1월", books: 3 },
-    { month: "2월", books: 4 },
-    { month: "3월", books: 2 },
-    { month: "4월", books: 5 },
-    { month: "5월", books: 3 },
-    { month: "6월", books: 4 },
-  ];
+  // API 호출 및 데이터 세팅
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setYearlyData(await getYearlyData());
+        setMonthlyData(await getMonthlyData());
+        setCategoryData(await getCategoryData());
+        setStatusData(await getStatusData());
+      } catch (error) {
+        console.error("데이터 로드 실패:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const categoryData = [
-    { category: "소설", books: 10 },
-    { category: "자기계발", books: 5 },
-    { category: "과학", books: 3 },
-    { category: "역사", books: 4 },
-    { category: "예술", books: 2 },
-  ];
+  const handleEditReview = (review) => setEditReview(review);
 
-  const yearlyData = [
-    { year: "2020", books: 15 },
-    { year: "2021", books: 20 },
-    { year: "2022", books: 25 },
-    { year: "2023", books: 30 },
-    { year: "2024", books: 5 },
-  ];
-
-  const statusData = [
-    { name: "읽는 중", value: 3 },
-    { name: "읽을 예정", value: 5 },
-    { name: "완독", value: 12 },
-  ];
-
-  // 독후감 상태
-  const [reviews, setReviews] = useState([
-    { id: 1, title: "책 제목 1", date: "2024-01-15", content: "독후감 내용 미리보기..." },
-    { id: 2, title: "책 제목 2", date: "2024-01-16", content: "독후감 내용 미리보기..." },
-  ]);
-  const [editReview, setEditReview] = useState(null); // 수정할 독후감 데이터
-
-  // 수정 시작
-  const handleEditReview = (review) => {
-    setEditReview(review);
-  };
-
-// 수정된 독후감 저장
-const handleSaveEditReview = async () => {
-  try {
-    const { id, title, content } = editReview;
-
-    // 수정 API 호출
-    const response = await updateReview({ id, title, content });
-
-    if (response.status === 200 || response.success) {
-      alert("독후감이 성공적으로 수정되었습니다.");
-
-      // 상태 업데이트 (프론트엔드에서도 반영)
-      setReviews((prevReviews) =>
-        prevReviews.map((review) =>
-          review.id === editReview.id ? { ...review, ...editReview } : review
-        )
-      );
-      setEditReview(null);
-    } else {
-      throw new Error(response.data?.message || "독후감 수정에 실패했습니다.");
-    }
-  } catch (error) {
-    console.error("독후감 수정 실패:", error);
-    alert(error.message || "독후감 수정 중 오류가 발생했습니다.");
-  }
-};
-
-  // 삭제
-const handleDeleteReview = async (id) => {
-  if (window.confirm("정말 삭제하시겠습니까?")) {
+  const handleSaveEditReview = async () => {
     try {
-      const response = await deleteReview(id);
+      const { id, title, content } = editReview;
+      const response = await updateReview({ id, title, content });
 
       if (response.status === 200 || response.success) {
-        alert("독후감이 성공적으로 삭제되었습니다.");
-        setReviews((prevReviews) => prevReviews.filter((review) => review.id !== id));
+        alert("독후감이 성공적으로 수정되었습니다.");
+        setReviews((prevReviews) =>
+          prevReviews.map((review) =>
+            review.id === editReview.id ? { ...review, ...editReview } : review
+          )
+        );
+        setEditReview(null);
       } else {
-        throw new Error(response.data?.message || "독후감 삭제에 실패했습니다.");
+        throw new Error(
+          response.data?.message || "독후감 수정에 실패했습니다."
+        );
       }
     } catch (error) {
-      console.error("독후감 삭제 실패:", error);
-      alert(error.message || "독후감 삭제 중 오류가 발생했습니다.");
+      console.error("독후감 수정 실패:", error);
+      alert(error.message || "독후감 수정 중 오류가 발생했습니다.");
     }
-  }
-};
+  };
+
+  const handleDeleteReview = async (id) => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      try {
+        const response = await deleteReview(id);
+
+        if (response.status === 200 || response.success) {
+          alert("독후감이 성공적으로 삭제되었습니다.");
+          setReviews((prevReviews) =>
+            prevReviews.filter((review) => review.id !== id)
+          );
+        } else {
+          throw new Error(
+            response.data?.message || "독후감 삭제에 실패했습니다."
+          );
+        }
+      } catch (error) {
+        console.error("독후감 삭제 실패:", error);
+        alert(error.message || "독후감 삭제 중 오류가 발생했습니다.");
+      }
+    }
+  };
 
   return (
     <div className="home">
@@ -125,10 +109,7 @@ const handleDeleteReview = async (id) => {
             독서현황
           </button>
           <button className="nav-btn active">기록</button>
-          <button
-            className="nav-btn"
-            onClick={() => navigate("/mypage")}
-          >
+          <button className="nav-btn" onClick={() => navigate("/mypage")}>
             내 서재
           </button>
         </div>
@@ -197,15 +178,17 @@ const handleDeleteReview = async (id) => {
         <Row>
           <Col md={2}>
             <div
-              className={`side-tab ${activeTab === "statistics" ? "active" : ""}`}
+              className={`side-tab ${
+                activeTab === "statistics" ? "active" : ""
+              }`}
               onClick={() => setActiveTab("statistics")}
             >
               <span className="tab-icon">📊</span>
               <span className="tab-text">독서 통계</span>
             </div>
             <div
-              className={`side-tab ${activeTab === "reviews" ? "active" : ""}`}
-              onClick={() => setActiveTab("reviews")}
+              className={`side-tab ${activeTab === "record" ? "active" : ""}`}
+              onClick={() => setActiveTab("record")}
             >
               <span className="tab-icon">📝</span>
               <span className="tab-text">독후감</span>
@@ -283,40 +266,69 @@ const handleDeleteReview = async (id) => {
               <div>
                 <Card>
                   <Card.Body>
-                    {/* 독후감 목록을 렌더링 */}
                     {reviews.map((review) => (
-                      <div key={review.id} className="review-item" style={{ marginBottom: "15px" }}>
+                      <div
+                        key={review.id}
+                        className="review-item"
+                        style={{ marginBottom: "15px" }}
+                      >
                         {editReview?.id === review.id ? (
                           <div>
                             <Form.Control
                               type="text"
                               value={editReview.title}
-                              onChange={(e) => setEditReview({ ...editReview, title: e.target.value })}
+                              onChange={(e) =>
+                                setEditReview({
+                                  ...editReview,
+                                  title: e.target.value,
+                                })
+                              }
                             />
                             <Form.Control
                               as="textarea"
                               rows={3}
                               value={editReview.content}
-                              onChange={(e) => setEditReview({ ...editReview, content: e.target.value })}
+                              onChange={(e) =>
+                                setEditReview({
+                                  ...editReview,
+                                  content: e.target.value,
+                                })
+                              }
                             />
-                            <Button variant="success" onClick={handleSaveEditReview}
-                              style={{ padding: "4px 15px", width: "50px"}} 
-                              >저장</Button>
-                            <Button variant="secondary" onClick={() => setEditReview(null)}
-                              style={{ padding: "4px 15px", width: "50px"}} 
-                              >취소</Button>
+                            <Button
+                              variant="success"
+                              onClick={handleSaveEditReview}
+                              style={{ padding: "4px 15px", width: "50px" }}
+                            >
+                              저장
+                            </Button>
+                            <Button
+                              variant="secondary"
+                              onClick={() => setEditReview(null)}
+                              style={{ padding: "4px 15px", width: "50px" }}
+                            >
+                              취소
+                            </Button>
                           </div>
                         ) : (
                           <div>
                             <h4>{review.title}</h4>
                             <p>작성일: {review.date}</p>
                             <p>{review.content}</p>
-                            <Button variant="warning" onClick={() => handleEditReview(review)} 
-                              style={{ padding: "4px 15px", width: "50px"}} 
-                              >수정</Button>
-                            <Button variant="danger" onClick={() => handleDeleteReview(review.id)} 
-                              style={{ padding: "4px 15px", width: "50px" }} 
-                              >삭제</Button>
+                            <Button
+                              variant="warning"
+                              onClick={() => handleEditReview(review)}
+                              style={{ padding: "4px 15px", width: "50px" }}
+                            >
+                              수정
+                            </Button>
+                            <Button
+                              variant="danger"
+                              onClick={() => handleDeleteReview(review.id)}
+                              style={{ padding: "4px 15px", width: "50px" }}
+                            >
+                              삭제
+                            </Button>
                           </div>
                         )}
                       </div>
