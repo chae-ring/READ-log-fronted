@@ -37,11 +37,11 @@ function Home() {
 
     fetchBooksByStatus(token, "ABANDONED")
       .then((data) => {
-        console.log("중단 책:", data); // 데이터 확인용
+        console.log("읽기 전 책:", data); // 데이터 확인용
         setBooks((prevBooks) => ({ ...prevBooks, abandoned: data }));
       })
       .catch((error) => {
-        console.error("중단 책 불러오기 오류:", error);
+        console.error("읽기 전 책 불러오기 오류:", error);
       });
   }, [token]);
 
@@ -316,7 +316,7 @@ function Home() {
 
           {/* 중단된 책들 */}
           <div className="status-card">
-            <h2>중단</h2>
+            <h2>읽기 전</h2>
             <div>
               {books.abandoned.map((book) => (
                 <div key={book.id} className="book-item">
