@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem("accessToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -80,10 +80,14 @@ export const postReview = async ({ title, content, rating }) => {
     return response.data;
   } catch (e) {
     console.error("리뷰 작성 에러:", e.response?.data || e.message);
-    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+    return (
+      e.response || {
+        status: 500,
+        data: { message: "서버 오류가 발생했습니다." },
+      }
+    );
   }
 };
-
 
 /**
  * 독후감 수정 함수
@@ -99,7 +103,12 @@ export const updateReview = async ({ id, title, content, rating }) => {
     return response.data;
   } catch (e) {
     console.error("리뷰 수정 에러:", e.response?.data || e.message);
-    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+    return (
+      e.response || {
+        status: 500,
+        data: { message: "서버 오류가 발생했습니다." },
+      }
+    );
   }
 };
 
@@ -113,7 +122,12 @@ export const deleteReview = async (id) => {
     return response.data;
   } catch (e) {
     console.error("리뷰 삭제 에러:", e.response?.data || e.message);
-    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+    return (
+      e.response || {
+        status: 500,
+        data: { message: "서버 오류가 발생했습니다." },
+      }
+    );
   }
 };
 
@@ -121,7 +135,16 @@ export const deleteReview = async (id) => {
  * 독서 등록 함수
  * @param {Object} param0 - 리뷰 정보 (id, title, content, rating)
  */
-export const postStatus = async ({ name, writer, status, genre, startReadDate, lastReadDate, currentPage, totalPage }) => {
+export const postStatus = async ({
+  name,
+  writer,
+  status,
+  genre,
+  startReadDate,
+  lastReadDate,
+  currentPage,
+  totalPage,
+}) => {
   try {
     const response = await axiosInstance.post(`/readings`, {
       name,
@@ -136,6 +159,25 @@ export const postStatus = async ({ name, writer, status, genre, startReadDate, l
     return response.data;
   } catch (e) {
     console.error("독서 현황 등록 에러:", e.response?.data || e.message);
-    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+    return (
+      e.response || {
+        status: 500,
+        data: { message: "서버 오류가 발생했습니다." },
+      }
+    );
+  }
+};
+export const getUserInfo = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/users/nickname`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("서버 응답:", response);
+    return response.data;
+  } catch (error) {
+    console.error("사용자 정보 조회 실패:", error);
+    throw new Error("사용자 정보 조회에 실패했습니다.");
   }
 };

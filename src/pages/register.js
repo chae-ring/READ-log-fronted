@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./register.css";
 import { postReview, postStatus } from "../api/instance";
-
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -16,26 +15,25 @@ const RegisterPage = () => {
     title: "",
     author: "",
     rating: 5,
-    content: ""
+    content: "",
   });
 
   const [statusFormData, setStatusFormData] = useState({
-    name: "",             // 책 제목
-    writer: "",           // 저자
-    status: "READING",    // 독서 상태
-    genre: "NOVEL",       // 카테고리
-    startReadDate: "",    // 시작일
-    lastReadDate: "",     // 종료일
-    currentPage: 0,       // 현재 페이지
-    totalPage: 0          // 전체 페이지
+    name: "", // 책 제목
+    writer: "", // 저자
+    status: "READING", // 독서 상태
+    genre: "NOVEL", // 카테고리
+    startReadDate: "", // 시작일
+    lastReadDate: "", // 종료일
+    currentPage: 0, // 현재 페이지
+    totalPage: 0, // 전체 페이지
   });
-  
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (!token) {
-      alert('로그인이 필요합니다.');
-      navigate('/login');
+      alert("로그인이 필요합니다.");
+      navigate("/login");
     }
   }, [navigate]);
 
@@ -44,60 +42,61 @@ const RegisterPage = () => {
     setShowConfirm(true);
   };
 
-
-  // 일단 넣기
-
-  // 끝 
-
   const handleConfirm = async () => {
     try {
       let response;
-      
+
       if (activeTab === "review") {
         response = await postReview(reviewFormData);
       } else {
-        response = await postStatus(statusFormData);  // 수정 필요 없음
+        response = await postStatus(statusFormData); // 수정 필요 없음
       }
-  
+
       if (response.status === 201 || response.status === 204) {
-        alert(activeTab === "review" ? '독후감이 성공적으로 등록되었습니다.' : '독서 현황이 성공적으로 등록되었습니다.');
-        navigate('/reviews');
+        alert(
+          activeTab === "review"
+            ? "독후감이 성공적으로 등록되었습니다."
+            : "독서 현황이 성공적으로 등록되었습니다."
+        );
+        navigate("/reviews");
       } else {
-        throw new Error(response.data?.message || '등록에 실패했습니다.');
+        throw new Error(response.data?.message || "등록에 실패했습니다.");
       }
     } catch (error) {
-      console.error(activeTab === "review" ? '독후감 등록 실패:' : '독서 현황 등록 실패:', error);
-      alert(error.message || '등록에 실패했습니다. 다시 시도해주세요.');
+      console.error(
+        activeTab === "review" ? "독후감 등록 실패:" : "독서 현황 등록 실패:",
+        error
+      );
+      alert(error.message || "등록에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setShowConfirm(false);
     }
   };
-  
 
   const handleReviewInputChange = (e) => {
     const { name, value } = e.target;
-    setReviewFormData(prev => ({
+    setReviewFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleStatusInputChange = (e) => {
     const { name, value } = e.target;
-    setStatusFormData(prev => ({
+    setStatusFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const StatusForm = () => (
-    <div className="form-container" style={{ textAlign:"center" }}>
+    <div className="form-container" style={{ textAlign: "center" }}>
       <Form className="register-form" onSubmit={handleSubmit}>
         <h2>독서 현황 등록</h2>
         <Form.Group className="mb-4">
-          <Form.Label>책 제목  </Form.Label>
-          <Form.Control 
-            type="String" 
+          <Form.Label>책 제목 </Form.Label>
+          <Form.Control
+            type="String"
             placeholder="책 제목을 입력하세요"
             name="name"
             value={statusFormData.name}
@@ -106,9 +105,9 @@ const RegisterPage = () => {
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>저자  </Form.Label>
-          <Form.Control 
-            type="String" 
+          <Form.Label>저자 </Form.Label>
+          <Form.Control
+            type="String"
             placeholder="저자를 입력하세요"
             name="writer"
             value={statusFormData.writer}
@@ -117,7 +116,7 @@ const RegisterPage = () => {
         </Form.Group>
 
         <Form.Group className="mb-4" style={{ marginBottom: "0.5rem" }}>
-          <Form.Label>독서 상태  </Form.Label>
+          <Form.Label>독서 상태 </Form.Label>
           <Form.Select
             name="status"
             value={statusFormData.status}
@@ -130,7 +129,7 @@ const RegisterPage = () => {
         </Form.Group>
 
         <Form.Group className="mb-4" style={{ marginBottom: "0.5rem" }}>
-          <Form.Label>카테고리  </Form.Label>
+          <Form.Label>카테고리 </Form.Label>
           <Form.Select
             name="genre"
             value={statusFormData.genre}
@@ -145,8 +144,8 @@ const RegisterPage = () => {
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>시작일  </Form.Label>
-          <Form.Control 
+          <Form.Label>시작일 </Form.Label>
+          <Form.Control
             type="date"
             name="startReadDate"
             value={statusFormData.startReadDate}
@@ -155,8 +154,8 @@ const RegisterPage = () => {
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>종료일  </Form.Label>
-          <Form.Control 
+          <Form.Label>종료일 </Form.Label>
+          <Form.Control
             type="date"
             name="lastReadDate"
             value={statusFormData.lastReadDate}
@@ -171,39 +170,35 @@ const RegisterPage = () => {
     </div>
   );
 
-
-
-/***
- * 독후감 작성 홈페이지
- */
+  /***
+   * 독후감 작성 홈페이지
+   */
   const ReviewForm = () => (
-    <div className="form-container" style={{ textAlign:"center" }}>
+    <div className="form-container" style={{ textAlign: "center" }}>
       <Form className="register-form" onSubmit={handleSubmit}>
         <h2>독후감 작성</h2>
         <Form.Group className="mb-4">
-          <Form.Label>책 제목  </Form.Label>
-          <Form.Control 
-            type="String" 
+          <Form.Label>책 제목 </Form.Label>
+          <Form.Control
+            type="String"
             placeholder="책 제목을 입력하세요"
             name="title"
             value={reviewFormData.title}
             onChange={handleReviewInputChange}
           />
         </Form.Group>
-
         <Form.Group className="mb-4">
-          <Form.Label>저자  </Form.Label>
-          <Form.Control 
-            type="String" 
+          <Form.Label>저자 </Form.Label>
+          <Form.Control
+            type="String"
             placeholder="저자를 입력하세요"
             name="author"
             value={reviewFormData.author}
             onChange={handleReviewInputChange}
           />
         </Form.Group>
-
         <Form.Group className="mb-4" style={{ marginBottom: "0.5rem" }}>
-          <Form.Label>평점  </Form.Label>
+          <Form.Label>평점 </Form.Label>
           <Form.Select
             name="rating"
             value={reviewFormData.rating}
@@ -216,9 +211,7 @@ const RegisterPage = () => {
             <option value="1">1점</option>
           </Form.Select>
         </Form.Group>
-
         lastReadDate
-
         <Button variant="primary" type="submit">
           등록하기
         </Button>
@@ -270,7 +263,10 @@ const RegisterPage = () => {
                   style={{
                     padding: "8px 16px",
                     cursor: "pointer",
-                    backgroundColor: hoveredDropdownItem === "status" ? "rgba(0,0,128,0.08)" : "transparent",
+                    backgroundColor:
+                      hoveredDropdownItem === "status"
+                        ? "rgba(0,0,128,0.08)"
+                        : "transparent",
                   }}
                   onMouseEnter={() => setHoveredDropdownItem("status")}
                   onMouseLeave={() => setHoveredDropdownItem(null)}
@@ -282,7 +278,10 @@ const RegisterPage = () => {
                   style={{
                     padding: "8px 16px",
                     cursor: "pointer",
-                    backgroundColor: hoveredDropdownItem === "review" ? "rgba(0,0,128,0.08)" : "transparent",
+                    backgroundColor:
+                      hoveredDropdownItem === "review"
+                        ? "rgba(0,0,128,0.08)"
+                        : "transparent",
                   }}
                   onMouseEnter={() => setHoveredDropdownItem("review")}
                   onMouseLeave={() => setHoveredDropdownItem(null)}
@@ -326,7 +325,9 @@ const RegisterPage = () => {
             }}
           >
             <p style={{ marginBottom: "20px" }}>등록하시겠습니까?</p>
-            <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <div
+              style={{ display: "flex", gap: "10px", justifyContent: "center" }}
+            >
               <Button variant="secondary" onClick={() => setShowConfirm(false)}>
                 취소
               </Button>

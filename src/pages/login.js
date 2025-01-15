@@ -33,8 +33,10 @@ const LoginPage = () => {
       // 로그인 성공 시
       if (result.accessToken) {
         alert("로그인 성공!");
-        localStorage.setItem("accessToken", result.accessToken); // 토큰 저장
-        navigate("/home"); // 마이페이지로 이동
+        localStorage.setItem("accessToken", result.accessToken);
+
+        console.log("로그인 성공, 토큰 저장:", result.accessToken);
+        navigate("/");
       } else {
         alert("로그인 실패. 이메일과 비밀번호를 확인하세요.");
       }
