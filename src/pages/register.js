@@ -46,25 +46,28 @@ const RegisterPage = () => {
     try {
       let response;
 
-      if (activeTab === "review") {
+      if (activeTab === "record") {
         response = await postReview(reviewFormData);
       } else {
-        response = await postStatus(statusFormData); // 수정 필요 없음
+        response = await postStatus(statusFormData);
       }
 
-      if (response.status === 201 || response.status === 204) {
+      console.log("API 응답:", response); // 응답 로그 확인
+
+      // 응답이 정상적이면 성공 처리
+      if (response && response.data && response.data.id) {
         alert(
-          activeTab === "review"
+          activeTab === "record"
             ? "독후감이 성공적으로 등록되었습니다."
             : "독서 현황이 성공적으로 등록되었습니다."
         );
-        navigate("/reviews");
+        navigate("/record");
       } else {
         throw new Error(response.data?.message || "등록에 실패했습니다.");
       }
     } catch (error) {
       console.error(
-        activeTab === "review" ? "독후감 등록 실패:" : "독서 현황 등록 실패:",
+        activeTab === "record" ? "독후감 등록 실패:" : "독서 현황 등록 실패:",
         error
       );
       alert(error.message || "등록에 실패했습니다. 다시 시도해주세요.");
@@ -211,7 +214,18 @@ const RegisterPage = () => {
             <option value="1">1점</option>
           </Form.Select>
         </Form.Group>
-        lastReadDate
+        <Form.Group className="mb-4">
+          <Form.Label>내용</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder="독후감을 입력하세요"
+            name="content"
+            value={reviewFormData.content}
+            onChange={handleReviewInputChange}
+            required // 필수 항목으로 설정
+          />
+        </Form.Group>
         <Button variant="primary" type="submit">
           등록하기
         </Button>
@@ -230,7 +244,7 @@ const RegisterPage = () => {
           <button className="nav-btn" onClick={() => navigate("/")}>
             독서현황
           </button>
-          <button className="nav-btn" onClick={() => navigate("/reviews")}>
+          <button className="nav-btn" onClick={() => navigate("/record")}>
             기록
           </button>
           <button className="nav-btn" onClick={() => navigate("/mypage")}>
@@ -279,13 +293,13 @@ const RegisterPage = () => {
                     padding: "8px 16px",
                     cursor: "pointer",
                     backgroundColor:
-                      hoveredDropdownItem === "review"
+                      hoveredDropdownItem === "record"
                         ? "rgba(0,0,128,0.08)"
                         : "transparent",
                   }}
-                  onMouseEnter={() => setHoveredDropdownItem("review")}
+                  onMouseEnter={() => setHoveredDropdownItem("record")}
                   onMouseLeave={() => setHoveredDropdownItem(null)}
-                  onClick={() => setActiveTab("review")}
+                  onClick={() => setActiveTab("record")}
                 >
                   독후감작성
                 </div>
