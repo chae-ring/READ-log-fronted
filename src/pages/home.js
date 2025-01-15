@@ -1,84 +1,94 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
 import "./home.css";
+import { fetchBooksByStatus } from "../api/instance";
 
 function Home() {
   const navigate = useNavigate();
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [hoveredDropdownItem, setHoveredDropdownItem] = useState(null);
   const [books, setBooks] = useState({
-    reading: [
-      {
-        id: 1,
-        title: "아주 작은 습관의 힘",
-        author: "제임스 클리어",
-        category: "자기계발",
-        currentPage: 125,
-        totalPages: 312,
-      },
-      {
-        id: 2,
-        title: "사피엔스",
-        author: "유발 하라리",
-        category: "역사",
-        currentPage: 89,
-        totalPages: 524,
-      },
-    ],
-    toRead: [
-      {
-        id: 1,
-        title: "총, 균, 쇠",
-        author: "재레드 다이아몬드",
-        category: "과학",
-        totalPages: 420,
-      },
-      {
-        id: 2,
-        title: "이기적 유전자",
-        author: "리처드 도킨스",
-        category: "과학",
-        totalPages: 386,
-      },
-    ],
-    completed: [
-      {
-        id: 1,
-        title: "1984",
-        author: "조지 오웰",
-        category: "소설",
-        totalPages: 328,
-      },
-      {
-        id: 2,
-        title: "멋진 신세계",
-        author: "올더스 헉슬리",
-        category: "소설",
-        totalPages: 288,
-      },
-    ],
+    reading: [],
+    completed: [],
+    abandoned: [],
   });
+  const [showDropdown, setShowDropdown] = useState(false); // 드롭다운 상태
+  const [hoveredDropdownItem, setHoveredDropdownItem] = useState(null); // 드롭다운 항목 hover 상태
 
-  const handleEditBook = (category, bookId) => {
-    const updatedBooks = books[category].map((book) =>
-      book.id === bookId ? { ...book, isEditing: !book.isEditing } : book
-    );
-    setBooks({ ...books, [category]: updatedBooks });
+  // 사용자 인증 토큰 (예시)
+  const token = "사용자_인증_토큰"; // 실제 토큰 값을 사용해야 합니다.
+
+  useEffect(() => {
+    fetchBooksByStatus(token, "READING")
+      .then((data) => {
+        console.log("읽는 중 책:", data); // 데이터 확인용
+        setBooks((prevBooks) => ({ ...prevBooks, reading: data }));
+      })
+      .catch((error) => {
+        console.error("읽는 중 책 불러오기 오류:", error);
+      });
+
+    fetchBooksByStatus(token, "COMPLETED")
+      .then((data) => {
+        console.log("완독 책:", data); // 데이터 확인용
+        setBooks((prevBooks) => ({ ...prevBooks, completed: data }));
+      })
+      .catch((error) => {
+        console.error("완독 책 불러오기 오류:", error);
+      });
+
+    fetchBooksByStatus(token, "ABANDONED")
+      .then((data) => {
+        console.log("중단 책:", data); // 데이터 확인용
+        setBooks((prevBooks) => ({ ...prevBooks, abandoned: data }));
+      })
+      .catch((error) => {
+        console.error("중단 책 불러오기 오류:", error);
+      });
+  }, [token]);
+
+  // 책 수정 처리 함수
+  const handleEditBook = (status, bookId) => {
+    setBooks((prevBooks) => {
+      const updatedBooks = { ...prevBooks };
+      const book = updatedBooks[status].find((b) => b.id === bookId);
+      if (book) {
+        book.isEditing = !book.isEditing; // 편집 상태 토글
+      }
+      return updatedBooks;
+    });
   };
 
-  const handleDeleteBook = (category, bookId) => {
-    const filteredBooks = books[category].filter((book) => book.id !== bookId);
-    setBooks({ ...books, [category]: filteredBooks });
+  // 책 삭제 처리 함수
+  const handleDeleteBook = (status, bookId) => {
+    setBooks((prevBooks) => {
+      const updatedBooks = { ...prevBooks };
+      updatedBooks[status] = updatedBooks[status].filter(
+        (book) => book.id !== bookId
+      );
+      return updatedBooks;
+    });
   };
 
-  const handleSaveEdit = (category, bookId, title, author, currentPage, totalPages) => {
-    const updatedBooks = books[category].map((book) =>
-      book.id === bookId
-        ? { ...book, title, author, currentPage, totalPages, isEditing: false }
-        : book
-    );
-    setBooks({ ...books, [category]: updatedBooks });
+  // 책 저장 처리 함수
+  const handleSaveEdit = (
+    status,
+    bookId,
+    title,
+    author,
+    currentPage,
+    totalPages
+  ) => {
+    setBooks((prevBooks) => {
+      const updatedBooks = { ...prevBooks };
+      const book = updatedBooks[status].find((b) => b.id === bookId);
+      if (book) {
+        book.title = title;
+        book.author = author;
+        book.currentPage = currentPage;
+        book.totalPages = totalPages;
+        book.isEditing = false; // 편집 상태 해제
+      }
+      return updatedBooks;
+    });
   };
 
   return (
@@ -160,10 +170,11 @@ function Home() {
 
       <main className="content">
         <section className="reading-status">
+          {/* 읽는 중 */}
           <div className="status-card">
             <h2>읽는 중</h2>
             <div>
-              {books.reading.map((book, index) => (
+              {books.reading.map((book) => (
                 <div key={book.id} className="book-item">
                   {book.isEditing ? (
                     <div>
@@ -201,7 +212,11 @@ function Home() {
                       >
                         저장
                       </button>
-                      <button onClick={() => handleEditBook("reading", book.id)}>취소</button>
+                      <button
+                        onClick={() => handleEditBook("reading", book.id)}
+                      >
+                        취소
+                      </button>
                     </div>
                   ) : (
                     <div>
@@ -209,59 +224,23 @@ function Home() {
                       <p>저자: {book.author}</p>
                       <p>카테고리: {book.category}</p>
                       <p>
-                        진행률: {Math.round((book.currentPage / book.totalPages) * 100)}%
+                        진행률:{" "}
+                        {Math.round((book.currentPage / book.totalPages) * 100)}
+                        %
                       </p>
                       <p>
                         ({book.currentPage}/{book.totalPages} 페이지)
                       </p>
-                      <button onClick={() => handleEditBook("reading", book.id)}>수정</button>
-                      <button onClick={() => handleDeleteBook("reading", book.id)}>삭제</button>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="status-card">
-            <h2>읽을 예정</h2>
-            <div>
-              {books.toRead.map((book, index) => (
-                <div key={book.id} className="book-item">
-                  {book.isEditing ? (
-                    <div>
-                      <input
-                        type="text"
-                        defaultValue={book.title}
-                        onChange={(e) => (book.title = e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        defaultValue={book.author}
-                        onChange={(e) => (book.author = e.target.value)}
-                      />
-                      <input
-                        type="number"
-                        defaultValue={book.totalPages}
-                        onChange={(e) => (book.totalPages = e.target.value)}
-                      />
                       <button
-                        onClick={() =>
-                          handleSaveEdit("toRead", book.id, book.title, book.author, 0, book.totalPages)
-                        }
+                        onClick={() => handleEditBook("reading", book.id)}
                       >
-                        저장
+                        수정
                       </button>
-                      <button onClick={() => handleEditBook("toRead", book.id)}>취소</button>
-                    </div>
-                  ) : (
-                    <div>
-                      <h3>{book.title}</h3>
-                      <p>저자: {book.author}</p>
-                      <p>카테고리: {book.category}</p>
-                      <p>총 {book.totalPages} 페이지</p>
-                      <button onClick={() => handleEditBook("toRead", book.id)}>수정</button>
-                      <button onClick={() => handleDeleteBook("toRead", book.id)}>삭제</button>
+                      <button
+                        onClick={() => handleDeleteBook("reading", book.id)}
+                      >
+                        삭제
+                      </button>
                     </div>
                   )}
                 </div>
@@ -269,10 +248,11 @@ function Home() {
             </div>
           </div>
 
+          {/* 완료된 책들 */}
           <div className="status-card">
             <h2>완독</h2>
             <div>
-              {books.completed.map((book, index) => (
+              {books.completed.map((book) => (
                 <div key={book.id} className="book-item">
                   {book.isEditing ? (
                     <div>
@@ -293,12 +273,23 @@ function Home() {
                       />
                       <button
                         onClick={() =>
-                          handleSaveEdit("completed", book.id, book.title, book.author, 0, book.totalPages)
+                          handleSaveEdit(
+                            "completed",
+                            book.id,
+                            book.title,
+                            book.author,
+                            0,
+                            book.totalPages
+                          )
                         }
                       >
                         저장
                       </button>
-                      <button onClick={() => handleEditBook("completed", book.id)}>취소</button>
+                      <button
+                        onClick={() => handleEditBook("completed", book.id)}
+                      >
+                        취소
+                      </button>
                     </div>
                   ) : (
                     <div>
@@ -306,10 +297,41 @@ function Home() {
                       <p>저자: {book.author}</p>
                       <p>카테고리: {book.category}</p>
                       <p>총 {book.totalPages} 페이지</p>
-                      <button onClick={() => handleEditBook("completed", book.id)}>수정</button>
-                      <button onClick={() => handleDeleteBook("completed", book.id)}>삭제</button>
+                      <button
+                        onClick={() => handleEditBook("completed", book.id)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => handleDeleteBook("completed", book.id)}
+                      >
+                        삭제
+                      </button>
                     </div>
                   )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 중단된 책들 */}
+          <div className="status-card">
+            <h2>중단</h2>
+            <div>
+              {books.abandoned.map((book) => (
+                <div key={book.id} className="book-item">
+                  <h3>{book.title}</h3>
+                  <p>저자: {book.author}</p>
+                  <p>카테고리: {book.category}</p>
+                  <p>총 {book.totalPages} 페이지</p>
+                  <button onClick={() => handleEditBook("abandoned", book.id)}>
+                    수정
+                  </button>
+                  <button
+                    onClick={() => handleDeleteBook("abandoned", book.id)}
+                  >
+                    삭제
+                  </button>
                 </div>
               ))}
             </div>

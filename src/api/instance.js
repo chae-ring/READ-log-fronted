@@ -191,8 +191,8 @@ export const getFinishedBooks = async (token) => {
     console.log("서버 응답:", response);
     return response.data;
   } catch (error) {
-    console.error("사용자 정보 조회 실패:", error);
-    throw new Error("사용자 정보 조회에 실패했습니다.");
+    console.error("정보 조회 실패:", error);
+    throw new Error("정보 조회에 실패했습니다.");
   }
 };
 export const getYearlyData = async (token) => {
@@ -205,8 +205,8 @@ export const getYearlyData = async (token) => {
     console.log("서버 응답:", response);
     return response.data;
   } catch (error) {
-    console.error("사용자 정보 조회 실패:", error);
-    throw new Error("사용자 정보 조회에 실패했습니다.");
+    console.error("정보 조회 실패:", error);
+    throw new Error("정보 조회에 실패했습니다.");
   }
 };
 export const getMonthlyData = async (token) => {
@@ -219,8 +219,8 @@ export const getMonthlyData = async (token) => {
     console.log("서버 응답:", response.data);
     return response.data;
   } catch (error) {
-    console.error("사용자 정보 조회 실패:", error);
-    throw new Error("사용자 정보 조회에 실패했습니다.");
+    console.error("정보 조회 실패:", error);
+    throw new Error("정보 조회에 실패했습니다.");
   }
 };
 export const getCategoryData = async (token) => {
@@ -233,8 +233,8 @@ export const getCategoryData = async (token) => {
     console.log("서버 응답:", response.data);
     return response.data;
   } catch (error) {
-    console.error("사용자 정보 조회 실패:", error);
-    throw new Error("사용자 정보 조회에 실패했습니다.");
+    console.error("정보 조회 실패:", error);
+    throw new Error("정보 조회에 실패했습니다.");
   }
 };
 export const getStatusData = async (token) => {
@@ -247,7 +247,35 @@ export const getStatusData = async (token) => {
     console.log("서버 응답:", response);
     return Array.isArray(response.data) ? response.data : [];
   } catch (error) {
-    console.error("사용자 정보 조회 실패:", error);
-    throw new Error("사용자 정보 조회에 실패했습니다.");
+    console.error("정보 조회 실패:", error);
+    throw new Error("정보 조회에 실패했습니다.");
+  }
+};
+export const fetchBooksByStatus = async (token, status) => {
+  try {
+    const response = await axiosInstance.get(`/readings/status`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { status },
+    });
+
+    console.log("서버 응답:", response); // 서버 응답 확인
+
+    // 응답에서 data 필드를 반환
+    return Array.isArray(response.data.data)
+      ? response.data.data.map((book) => ({
+          id: book.id,
+          title: book.name, // 책 제목
+          author: book.writer, // 저자
+          status: book.status, // 독서 상태
+          category: book.genre, // 카테고리
+          startDate: book.startReadDate, // 시작일
+          lastReadDate: book.lastReadDate, // 마지막 읽은 날짜
+        }))
+      : [];
+  } catch (error) {
+    console.error("정보 조회 실패:", error);
+    throw new Error("정보 조회에 실패했습니다.");
   }
 };
