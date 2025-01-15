@@ -80,7 +80,7 @@ const RegisterPage = () => {
     const { name, value } = e.target;
     setReviewFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "rating" ? parseInt(value, 10) : value,
     }));
   };
 
@@ -207,11 +207,11 @@ const RegisterPage = () => {
             value={reviewFormData.rating}
             onChange={handleReviewInputChange}
           >
-            <option value="5">5점</option>
-            <option value="4">4점</option>
-            <option value="3">3점</option>
-            <option value="2">2점</option>
-            <option value="1">1점</option>
+            <option value={5}>5점</option>
+            <option value={4}>4점</option>
+            <option value={3}>3점</option>
+            <option value={2}>2점</option>
+            <option value={1}>1점</option>
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-4">
