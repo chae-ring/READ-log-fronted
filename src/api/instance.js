@@ -181,3 +181,17 @@ export const getUserInfo = async (token) => {
     throw new Error("사용자 정보 조회에 실패했습니다.");
   }
 };
+export const getFinishedBooks = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/mypage/finished-books`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("서버 응답:", response);
+    return response.data;
+  } catch (error) {
+    console.error("사용자 정보 조회 실패:", error);
+    throw new Error("사용자 정보 조회에 실패했습니다.");
+  }
+};

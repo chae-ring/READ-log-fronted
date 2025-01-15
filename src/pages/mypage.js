@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getUserInfo } from "../api/instance"; // 사용자 정보 조회 API
+import { getUserInfo, getFinishedBooks } from "../api/instance"; // 완독한 도서 조회 API 추가
 import "./register.css";
 
 const MyPage = () => {
@@ -9,6 +9,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState(""); // 닉네임 상태 추가
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [error, setError] = useState(null); // 에러 상태 추가
+  const [readBooks, setReadBooks] = useState([]); // 완독한 도서 상태 추가
 
   const fetchUserInfo = async () => {
     try {
@@ -28,22 +29,32 @@ const MyPage = () => {
       setLoading(false); // 요청 완료 후 로딩 상태 변경
     }
   };
+
+  const fetchFinishedBooks = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        throw new Error("로그인되지 않았습니다.");
+      }
+
+      const response = await getFinishedBooks(token); // 완독한 도서 API 호출
+      console.log("완독한 도서 서버 응답:", response); // 응답 확인
+      if (response.statusCode === 200) {
+        setReadBooks(response.data); // 도서 목록 설정
+      } else {
+        setError("완독한 도서를 불러오는 데 실패했습니다.");
+      }
+    } catch (err) {
+      console.error("완독한 도서 조회 중 오류 발생:", err);
+      setError(err.message || "완독한 도서를 불러오는 데 오류가 발생했습니다.");
+    }
+  };
+
   useEffect(() => {
     console.log("마이페이지 데이터 로딩 시작...");
     fetchUserInfo();
+    fetchFinishedBooks(); // 완독한 도서 정보 불러오기
   }, []);
-
-  // 임시 데이터
-  const readBooks = [
-    {
-      id: 1,
-      title: "클린 코드",
-      author: "로버트 C. 마틴",
-      readDate: "2023-05",
-    },
-    { id: 2, title: "1984", author: "조지 오웰", readDate: "2023-06" },
-    { id: 3, title: "데미안", author: "헤르만 헤세", readDate: "2023-07" },
-  ];
 
   const BookShelf = ({ books, isRead }) => (
     <div
@@ -59,9 +70,9 @@ const MyPage = () => {
         margin: "0 auto", // 가로 방향 중앙 정렬
       }}
     >
-      {books.map((book) => (
+      {books.map((book, index) => (
         <div
-          key={book.id}
+          key={index}
           style={{
             width: "150px",
             height: "200px",
@@ -91,7 +102,7 @@ const MyPage = () => {
               fontWeight: "bold",
             }}
           >
-            {book.title}
+            {book.name}
             <div
               style={{
                 fontSize: "0.7rem",
@@ -99,7 +110,7 @@ const MyPage = () => {
                 color: "#ddd",
               }}
             >
-              {book.author}
+              {book.writer}
             </div>
             {isRead && book.readDate && (
               <div
