@@ -84,26 +84,6 @@ export const postReview = async ({ title, content, rating }) => {
   }
 };
 
-/**
- * 독서 현황 등록 함수
- * @param {Object} param0 - 독서 현황 정보 (title, author, status, category, startDate, endDate)
- */
-export const postStatus = async ({ title, author, status, category, startDate, endDate }) => {
-  try {
-    const response = await axiosInstance.post(`/readings`, {
-      title,
-      author,
-      status,
-      category,
-      startDate,
-      endDate,
-    });
-    return response.data;
-  } catch (e) {
-    console.error("독서 현황 등록 에러:", e.response?.data || e.message);
-    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
-  }
-};
 
 /**
  * 독후감 수정 함수
@@ -137,8 +117,25 @@ export const deleteReview = async (id) => {
   }
 };
 
-// 독후감 목록 조회
-export const getReviews = async () => {
-  const response = await axiosInstance.get("/reviews");
-  return response.data;
+/**
+ * 독서 등록 함수
+ * @param {Object} param0 - 리뷰 정보 (id, title, content, rating)
+ */
+export const postStatus = async ({ name, writer, status, genre, startReadDate, lastReadDate, currentPage, totalPage }) => {
+  try {
+    const response = await axiosInstance.post(`/readings`, {
+      name,
+      writer,
+      status,
+      genre,
+      startReadDate,
+      lastReadDate,
+      currentPage,
+      totalPage,
+    });
+    return response.data;
+  } catch (e) {
+    console.error("독서 현황 등록 에러:", e.response?.data || e.message);
+    return e.response || { status: 500, data: { message: "서버 오류가 발생했습니다." } };
+  }
 };
